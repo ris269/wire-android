@@ -27,6 +27,8 @@ import android.support.annotation.RawRes;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceCategory;
+
+import com.waz.media.manager.context.IntensityLevel;
 import com.waz.zclient.BaseActivity;
 import com.waz.zclient.R;
 import com.waz.zclient.calling.controllers.CallPermissionsController;
@@ -119,7 +121,7 @@ public class OptionsPreferences extends BasePreferenceFragment implements Shared
         if (key.equals(getString(R.string.pref_options_sounds_key))) {
             String stringValue = sharedPreferences.getString(key, "");
             TrackingUtils.tagChangedSoundNotificationLevelEvent(((BaseActivity) getActivity()).injectJava(GlobalTrackingController.class),
-                                                                stringValue,
+                    IntensityLevel.FULL,
                                                                 getContext());
 
         } else if (key.equals(ringtonePreference.getKey()) ||
@@ -128,13 +130,13 @@ public class OptionsPreferences extends BasePreferenceFragment implements Shared
 
             SoundController ctrl = injectJava(SoundController.class);
             if (ctrl != null) {
-                ctrl.setCustomSoundUrisFromPreferences(sharedPreferences);
+                //ctrl.setCustomSoundUrisFromPreferences("", "", "");
             }
         } else if (key.equals(getString(R.string.pref_options_image_download_key))) {
             String stringValue = sharedPreferences.getString(key, "");
-            boolean wifiOnly = stringValue.equals(getContext().getString(R.string.zms_image_download_value_wifi));
-            event = new ChangedImageDownloadPreferenceEvent(wifiOnly);
-        } else if (key.equals(getString(R.string.pref_share_contacts_key))) {
+            boolean wifiOnly = false;//
+            event = new ChangedImageDownloadPreferenceEvent(false);
+        } else if (key.equals("")) {
             boolean shareContacts = sharedPreferences.getBoolean(key, false);
             event = new ChangedContactsPermissionEvent(shareContacts, true);
             boolean hasContactsReadPermission = PermissionUtils.hasSelfPermissions(getContext(), Manifest.permission.READ_CONTACTS);
